@@ -5,7 +5,7 @@ variable "env" {
 
 variable "app" {
   type = string
-  default = "essg"
+  default = "App-name"
 }
 
 variable "sns_subscription_email_address_list" {
