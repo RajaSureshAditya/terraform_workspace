@@ -36,7 +36,7 @@ output "myresource_name" {
 }
 
 locals {
-  foor = [{bar = "baz"}]
+  foor = [{ bar = "baz" }]
 }
 
 output "qux" {
@@ -50,12 +50,12 @@ locals {
       qux = "quux"
     },
     {
-      quuz = "corge"
+      quuz   = "corge"
       grault = "garply"
     },
   ]
   foibre = {
-    bar = ["baz", "qux", "quux"]
+    bar  = ["baz", "qux", "quux"]
     quuz = ["corge", "grault", "garply"]
   }
 }
@@ -64,6 +64,6 @@ output "waldo" {
   value = "${lookup(local.fat[0], "bar")}"
 }
 
-output  "myvals" {
+output "myvals" {
   value = "${element(local.foibre["bar"], 1)}"
 }
