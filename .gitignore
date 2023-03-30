@@ -1,6 +1,5 @@
+.DS_Store
+.terraform
+.gitignore
 
-**/.terraform/*
-
-**/.DS_Store
-
-
+*.tfstate*
