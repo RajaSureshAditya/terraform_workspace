@@ -9,7 +9,22 @@ server:
       g, aditya, role:aditya_role
 EOF
 
-temp = format("%s",var.app_additional_yaml_config,)
 
+
+local_var = yamldecode(var.app_additional_yaml_config)
+
+#policy_var = lookup(local_var,"server",null) == null ? null : lookup()
+
+aditya = concat([yamldecode(var.app_additional_yaml_config)],[yamldecode(local.additional_yaml_config)])
+
+flattened_map = flatten([
+    for server, rbacConfig in local.local_var : [
+      for policy,rules in rbacConfig:[
+        rules
+      ]
+    ]
+  ])
+
+#actual_value = lookup(local.temp,"server","null") == null ? null : 
 
 }
