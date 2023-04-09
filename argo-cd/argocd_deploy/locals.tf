@@ -1,30 +1,29 @@
+#flattened_map = flatten([
+#    for server, rbacConfig in local.aditya : [
+#      for policy,rules in rbacConfig:[
+#        rules
+#      ]
+#    ]
+#  ])
 locals {
-    additional_yaml_config = <<EOF
+    additional_yaml_config = <<EOT
 server:
   rbacConfig:
     policy.csv: |
       p, role:aditya_role, applications, get, */*, allow
       p, role:aditya_role, applications, sync, */*, allow
-      p, role:aditya_role, applications, action/apps/Deployment/restart, */*, allow
+      #p, role:aditya_role, applications, action/apps/Deployment/restart, */*, allow
       g, aditya, role:aditya_role
+EOT
+
+app_rbac = try(yamldecode(var.app_additional_yaml_config)["server"]["rbacConfig"]["policy.csv"] != null, false)
+
+rbac_policy =  local.app_rbac == true ? join("",[yamldecode(local.additional_yaml_config)["server"]["rbacConfig"]["policy.csv"]],[yamldecode(var.app_additional_yaml_config)["server"]["rbacConfig"]["policy.csv"]]): join("",[yamldecode(local.additional_yaml_config)["server"]["rbacConfig"]["policy.csv"]])
+
+gen_rbac_policy = <<EOF
+server:
+  rbacConfig:
+    policy.csv: |
+      ${indent(6,local.rbac_policy)}
 EOF
-
-
-
-local_var = yamldecode(var.app_additional_yaml_config)
-
-#policy_var = lookup(local_var,"server",null) == null ? null : lookup()
-
-aditya = concat([yamldecode(var.app_additional_yaml_config)],[yamldecode(local.additional_yaml_config)])
-
-flattened_map = flatten([
-    for server, rbacConfig in local.local_var : [
-      for policy,rules in rbacConfig:[
-        rules
-      ]
-    ]
-  ])
-
-#actual_value = lookup(local.temp,"server","null") == null ? null : 
-
 }

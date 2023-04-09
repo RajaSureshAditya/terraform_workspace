@@ -9,7 +9,7 @@ resource "helm_release" "argo_cd" {
   create_namespace = true
   timeout   = 1200
 
-  values = [local.additional_yaml_config,var.app_additional_yaml_config]
+  values = [var.app_additional_yaml_config]
 }
 
 

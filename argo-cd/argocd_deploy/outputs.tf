@@ -1,7 +1,13 @@
-output "local_rend" {
-    value = local.flattened_map
-}
-
-#output "local_merged" {
-#    value = local.temp
+#output "local_rend" {
+#    value = jsondecode(replace(local.merged_policy_csv, "\n", ""))
 #}
+
+
+
+
+
+
+
+
+
+
