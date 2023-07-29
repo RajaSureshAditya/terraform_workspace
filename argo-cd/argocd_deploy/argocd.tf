@@ -12,6 +12,17 @@ resource "helm_release" "argo_cd" {
   values = [var.app_additional_yaml_config]
 }
 
+resource "helm_release" "argo_app" {
+  name  = "argocd-apps"
+  chart = "argocd-apps"
+  repository = "https://argoproj.github.io/argo-helm"
+  namespace  = "argo-cd"
+  depends_on = [resource.helm_release.argo_cd]
+  values = [
+    var.argocd_app_config
+  ]
+}
+
 
 
 #data "template_file" "init" {

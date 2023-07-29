@@ -1,0 +1,25 @@
+  notifiers:
+    service.webhook.jenkins: |
+      url: http://jenkins.jenkins:8080/job/test/buildWithParameters?token=gen-token&ImageName=Aditya
+        basicAuth:
+          username: admin
+          password: 11514a57c0ef43e2f9abf1ff2914d5c57a
+  subscriptions:
+    - recipients:
+        - webhook:jenkins
+      selector: app=helm-guestbook
+      triggers:
+        - on-sync-succeeded
+  templates:
+    template.on-sync-succeeded: |
+      webhook:
+        jenkins:
+          method: POST
+          body: |
+            {
+              "ImageName": "Raja"
+            }
+  triggers:
+    trigger.on-sync-succeeded: |
+      - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+        send: [on-sync-succeeded]

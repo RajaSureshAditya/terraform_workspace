@@ -6,6 +6,7 @@
 #    ]
 #  ])
 locals {
+  app_names = ["carbon","restwsss"]
     additional_yaml_config = <<EOT
 server:
   rbacConfig:
